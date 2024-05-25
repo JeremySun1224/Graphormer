@@ -61,11 +61,7 @@ docker pull nvcr.io/nvidia/pytorch:23.05-py3
 docker run -itd --name sx_fairseq_ngc nvcr.io/nvidia/pytorch:23.05-py3 bash  # 23.03-py3为python3.8容器
 docker exec -ti sx_fairseq_ngc bash
 
-# Graphormer安装
-cd /workspace
-git clone https://github.com/microsoft/Graphormer.git
-cd Graphormer
-pip install lmdb
+pip install lmdb==1.4.1
 pip install torch_scatter==2.1.1
 pip install torch_sparse==0.6.17
 pip install torch_geometric==2.3.1
@@ -74,11 +70,13 @@ pip install ogb==1.3.6
 pip install rdkit_pypi==2022.9.5
 pip install dgl==1.1.2
 
-# fairseq安装
-cd fairseq
-git submodule update --init --recursive
-pip install --upgrade setuptools wheel
+cd /path/to/workspace
 
+git clone https://github.com/microsoft/Graphormer.git
+cd Graphormer/fairseq
+git submodule update --init --recursive
+
+pip install --upgrade setuptools wheel
 python -m pip install pip==21.1
 pip install --editable ./ --no-deps --use-feature=in-tree-build
 python setup.py build_ext --inplace
