@@ -2,10 +2,6 @@
 
 Graphormer is a deep learning package that allows researchers and developers to train custom models for molecule modeling tasks. It aims to accelerate the research and application in AI for molecule science, such as material discovery, drug discovery, etc. [Project website](https://www.microsoft.com/en-us/research/project/graphormer/).
 
-## Hiring
-We are hiring at all levels (including FTE researchers and interns)! If you are interested in working with us on AI for Molecule Science, please send your resume to <a href="mailto:shuz@microsoft.com" class="x-hidden-focus">shuz@microsoft.com</a>.
-
-
 ## Highlights in Graphormer v2.0
 * The model, code, and script used in the [Open Catalyst Challenge](https://opencatalystproject.org/challenge.html) are available.
 * Pre-trained models on PCQM4M and PCQM4Mv2 are available, more pre-trained models are comming soon.
