@@ -54,7 +54,7 @@ class BatchedDataDataset(FairseqDataset, ABC):
         return item
 
     def collater(self, samples):
-        return
+        return  # TODO
 
 
 class GraphormerDataset:
@@ -161,7 +161,7 @@ class GraphormerPYGDataset(Dataset, ABC):
 
         self.__indices__ = None
 
-    def index_select(self, idx):
+    def index_select(self, idx):  # self即GraphormerPYGDataset(3599188)
         dataset = copy.copy(self)  # 创建当前对象的浅拷贝, 新的对象将有和原对象相同的属性值, 但不会共享复杂子对象的内存引用, 以便在新对象中保留对原始数据的引用
         dataset.dataset = self.dataset.index_select(idx)
         if isinstance(idx, torch.Tensor):
@@ -203,6 +203,12 @@ class GraphormerPYGDataset(Dataset, ABC):
             return preprocess_item(item)
         else:
             raise TypeError("Index to a GraphormerPYGDataset can only be an integer.")
+
+    def get(self, idx: int):
+        pass
+
+    def len(self):
+        pass
 
 
 class MyPygPCQM4Mv2Dataset(PygPCQM4Mv2Dataset):
