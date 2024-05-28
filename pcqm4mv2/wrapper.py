@@ -21,21 +21,21 @@ def convert_to_single_emb(x, offset: int = 512):  # 为每个特征加上基于�
 def preprocess_item(item):
     edge_attr, edge_index, x = item.edge_attr, item.edge_index, item.x  # edge_attr: [num_edges, num_features], edge_index: [2, num_edges], x: [num_nodes, num_features]
     N = x.size(0)  # 节点数
-    x = convert_to_single_emb(x)
+    x = convert_to_single_emb(x)  # 一维特征嵌入
 
     adj = torch.zeros([N, N], dtype=torch.bool)  # node adj matrix
     adj[edge_index[0, :], edge_index[1, :]] = True
 
     if len(edge_attr.size()) == 1:
-        edge_attr = edge_attr[:, None]
+        edge_attr = edge_attr[:, None]  # 新增一维
     attn_edge_type = torch.zeros([N, N, edge_attr.size(-1)], dtype=torch.long)
     attn_edge_type[edge_index[0, :], edge_index[1, :]] = (
-            convert_to_single_emb(edge_attr) + 1
+            convert_to_single_emb(edge_attr) + 1  # TODO: with graph token ???
     )  # 节点间边嵌入特征
 
     shortest_path_result, path = algos.floyd_warshall(adj.numpy())  # shortest_path_result, 最短距离, [n_node, n_node]; path: 最短路径上第一个中间节点, [n_node, n_node]  #
     max_dist = np.max(shortest_path_result)  # 最短路径中允许的最大步数
-    edge_input = algos.gen_edge_input(max_dist, path, attn_edge_type.numpy())  # 从节点i到节点j的最短路径上的边特征
+    edge_input = algos.gen_edge_input(max_dist, path, attn_edge_type.numpy())  # 从节点i到节点j的最短路径上的边的特征
     spatial_pos = torch.from_numpy(shortest_path_result).long()  # 从节点i到节点j的最短距离
     attn_bias = torch.zeros([N + 1, N + 1], dtype=torch.float)  # with graph token
 

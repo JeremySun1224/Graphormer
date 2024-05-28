@@ -18,6 +18,7 @@ from dgl.data import DGLDataset
 from fairseq.data import FairseqDataset
 
 from config import TrainArgs
+from wrapper import preprocess_item
 
 args = TrainArgs
 
@@ -30,6 +31,10 @@ def load_dataset(dm, split):
         batched_data = dm.dataset_val
     elif split == "test":
         batched_data = dm.dataset_test
+
+    batched_data = BatchedDataDataset(
+
+    )
 
 
 class BatchedDataDataset(FairseqDataset, ABC):
@@ -54,7 +59,7 @@ class BatchedDataDataset(FairseqDataset, ABC):
         return item
 
     def collater(self, samples):
-        return  # TODO
+        return
 
 
 class GraphormerDataset:
