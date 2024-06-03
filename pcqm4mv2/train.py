@@ -19,12 +19,12 @@ from fairseq.data import FairseqDataset
 
 from config import TrainArgs
 from wrapper import preprocess_item
+from collator import collator
 
-args = TrainArgs
 
-
-def load_dataset(dm, split):
+def load_dataset(args, dm, split):
     assert split in ["train", "valid", "test"]
+    batched_data = None
     if split == "train":
         batched_data = dm.dataset_train
     elif split == "valid":
@@ -33,8 +33,19 @@ def load_dataset(dm, split):
         batched_data = dm.dataset_test
 
     batched_data = BatchedDataDataset(
-
+        dataset=batched_data,
+        max_node=args.max_node,
+        multi_hop_max_dist=args.multi_htop_max_dist,
+        spatial_pos_max=args.spatial_pos_max
     )
+
+    data_sizes = np.array([args.max_node] * len(batched_data))
+
+    target = TargetDataset
+
+
+class TargetDataset()
+
 
 
 class BatchedDataDataset(FairseqDataset, ABC):
@@ -59,7 +70,12 @@ class BatchedDataDataset(FairseqDataset, ABC):
         return item
 
     def collater(self, samples):
-        return
+        return collator(
+            items=samples,
+            max_node=self.max_node,
+            multi_hop_max_dist=self.multi_hop_max_dist,
+            spatial_pos_max=self.spatial_pos_max
+        )
 
 
 class GraphormerDataset:
@@ -268,6 +284,8 @@ class OGBDatasetLookupTable:
 
 
 if __name__ == '__main__':
-    _inner_dataset = MyPygPCQM4Mv2Dataset(root=os.path.join(args.root_path, "datasets"))
+    _args = TrainArgs
+
+    _inner_dataset = MyPygPCQM4Mv2Dataset(root=os.path.join(_args.root_path, "datasets"))
     _idx_split = _inner_dataset.get_idx_split()
     print(_idx_split)
